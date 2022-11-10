@@ -15,21 +15,21 @@ app.use(express.json());
 
 
 
-function verifyJWT(req, res, next) {
-    const authHeader = req.headers.authorization;
-    console.log(authHeader)
-    if (!authHeader) {
-        return res.status(401).send({ message: 'unauthorized user' })
-    }
-    const token = authHeader.split(' ')[1]
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
-        if (err) {
-            return res.status(403).send({ message: 'unauthorized user' })
-        }
-        req.decoded = decoded;
-        next();
-    })
-}
+// function verifyJWT(req, res, next) {
+//     const authHeader = req.headers.authorization;
+//     console.log(authHeader)
+//     if (!authHeader) {
+//         return res.status(401).send({ message: 'unauthorized user' })
+//     }
+//     const token = authHeader.split(' ')[1]
+//     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function (err, decoded) {
+//         if (err) {
+//             return res.status(403).send({ message: 'unauthorized user' })
+//         }
+//         req.decoded = decoded;
+//         next();
+//     })
+// }
 
 
 
@@ -55,11 +55,11 @@ async function run() {
         })
 
 
-        app.post('/jwt', (req, res) => {
-            const user = req.body;
-            const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
-            res.send({ token });
-        })
+        // app.post('/jwt', (req, res) => {
+        //     const user = req.body;
+        //     const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+        //     res.send({ token });
+        // })
 
         app.get('/services/:id', async (req, res) => {
             const id = req.params.id;
@@ -88,12 +88,12 @@ async function run() {
             res.send(result);
         })
 
-        app.get('/reviews', verifyJWT, async (req, res) => {
-            const decoded = req.decoded;
+        app.get('/reviews', async (req, res) => {
+            // const decoded = req.decoded;
 
-            if (decoded.email !== req.query.email) {
-                res.status(403).send({ message: 'unauthorized access' })
-            }
+            // if (decoded.email !== req.query.email) {
+            //     res.status(403).send({ message: 'unauthorized access' })
+            // }
             let query = {};
             if (req.query.email) {
                 query = {
